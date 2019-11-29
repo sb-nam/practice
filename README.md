@@ -1,7 +1,7 @@
 # practice
 # practice
 
-
+```java
 import java.util.Scanner;
 
  
@@ -140,8 +140,7 @@ public class WordGameApp {
 
       return player;
 
-   }
-
- 
+   } 
 
 }
+```
