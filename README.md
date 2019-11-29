@@ -243,3 +243,211 @@ public class P480 {
    }
 }
 ```
+
+```java
+
+package Exercise;
+
+import java.util.Scanner;
+
+abstract class GameObject1 {
+   protected int distance;
+   protected int x, y;
+
+   public GameObject1(int startX, int startY, int distance) {
+      this.x = startX;
+      this.y = startY;
+      this.distance = distance;
+   }
+
+   public int getX() {
+      return x;
+   }
+
+   public int getY() {
+      return y;
+   }
+
+   public boolean collide(GameObject p) {
+      if (this.x == p.getX() && this.y == p.getY())
+         return true;
+      else
+         return false;
+   }
+
+   protected abstract void move();
+
+   protected abstract char getShape();
+}
+
+class Bear1 extends GameObject1 {
+
+   public Bear1(int startX, int startY, int distance) {
+      super(startX, startY, distance);
+   }
+
+   @Override
+   protected void move() {
+      Scanner sc = new Scanner(System.in);
+      System.out.print("왼쪽 (a), 아래(s), 오른쪽(d), 위(w) >>");
+      char selectMove = sc.next().charAt(0);
+      switch (selectMove) {
+      case 'a':
+         if (x == 0) {
+            System.out.println("왼쪽에 벽이 있습니다.");
+            move();
+         } else {
+            x--;
+            distance++;
+         }
+         break;
+      case 's':
+         if (y == 9) {
+            System.out.println("아래에 벽이 있습니다.");
+            move();
+         } else {
+            y++;
+            distance++;
+         }
+         break;
+      case 'd':
+         if (x == 19) {
+            System.out.println("오른쪽에 벽이 있습니다.");
+            move();
+         } else {
+            x++;
+            distance++;
+         }
+         break;
+      case 'w':
+         if (y == 0) {
+            System.out.println("위에 벽이 있습니다.");
+            move();
+         } else {
+            y--;
+            distance++;
+         }
+         break;
+      default:
+         System.out.println("잘못 입력하였습니다.");
+         move();
+      }
+   }
+
+   @Override
+   protected char getShape() {
+      return 'B';
+   }
+
+   public boolean collide(GameObject p) {
+      if (this.x == p.getX() && this.y == p.getY())
+         return true;
+      else
+         return false;
+   }
+
+   public int getDistance() {
+      return distance;
+   }
+
+}
+
+class Fish1 extends GameObject1 {
+
+   public Fish1(int startX, int startY, int distance) {
+      super(startX, startY, distance);
+   }
+
+   @Override
+   protected void move() {
+      int randomMove;
+      while (true) {
+         randomMove = (int) (Math.random() * 10 % 4);
+         switch (randomMove) {
+         case 0:
+            if (x == 0) {
+               System.out.println("왼쪽에 벽이 있습니다.");
+               move();
+            } else {
+               x--;
+               distance++;
+            }
+            break;
+         case 1:
+            if (y == 9) {
+               System.out.println("아래에 벽이 있습니다.");
+               move();
+            } else {
+               y++;
+               distance++;
+            }
+            break;
+         case 2:
+            if (x == 19) {
+               System.out.println("오른쪽에 벽이 있습니다.");
+               move();
+            } else {
+               x++;
+               distance++;
+            }
+            break;
+         case 3:
+            if (y == 0) {
+               System.out.println("위에 벽이 있습니다.");
+               move();
+            } else {
+               y--;
+               distance++;
+            }
+            break;
+         }
+         break;
+      }
+   }
+
+   @Override
+   protected char getShape() {
+      return '@';
+   }
+
+   public int getDistance() {
+      return distance;
+   }
+}
+
+public class P306 {
+
+   public static void main(String[] args) {
+      GameObject bear = new Bear(0, 0, 0);
+      GameObject fish = new Fish((int) ((Math.random() * 100) % 19 + 1), (int) ((Math.random() * 10) % 9 + 1), 0);
+      Scanner sc = new Scanner(System.in);
+      char print[][] = new char[10][20];
+      int cnt = 0;
+      while (true) {
+         for (int i = 0; i < print.length; i++) {
+            for (int j = 0; j < print[i].length; j++) {
+               print[i][j] = '-';
+            }
+         }
+         print[fish.getY()][fish.getX()] = fish.getShape();
+         print[bear.getY()][bear.getX()] = bear.getShape();
+         for (int i = 0; i < print.length; i++) {
+            for (int j = 0; j < print[i].length; j++) {
+               System.out.print(print[i][j]);
+            }
+            System.out.println();
+         }
+         if (bear.collide(fish)) {
+            System.out.println("bear Wins!!");
+            break;
+         }
+         bear.move();
+         if (bear.distance >= 5) {
+            bear.distance = 0;
+         } else if (bear.distance > 2) {
+            fish.move();
+         }
+      }
+   }
+}
+```
