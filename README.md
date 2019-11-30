@@ -1,5 +1,5 @@
-# practice
-# practice
+# git add * / git commit -m " " / git push origin master .
+# 
 
 ```java
 import java.util.Scanner;
