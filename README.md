@@ -1,5 +1,5 @@
 # git add * / git commit -m " " / git push origin master .
-# 
+# 내가 올린 주소 복사 / project / + 버튼 누른 후 주소 붙여넣기.
 
 ```java
 import java.util.Scanner;
