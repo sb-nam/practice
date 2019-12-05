@@ -597,3 +597,52 @@ public class Exercise10_1 extends JFrame {
 }
 
 ```
+
+```java
+
+package Exercise;
+
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JFrame;
+
+@SuppressWarnings("serial")
+public class Exercise10_2 extends JFrame {
+
+	;
+	public Exercise10_2() {
+		// TODO Auto-generated constructor stub
+	    setTitle("드래깅 하는동안 YELLOW 유지하는 예제");
+	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    setSize(300, 200);
+	    setVisible(true);
+	    
+	    Container c = getContentPane();
+	    c.addMouseListener(new MyMouseMotion());
+	}
+
+
+	class MyMouseMotion extends MouseAdapter {
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			Container c = (Container)e.getSource();
+			c.setBackground(Color.YELLOW);
+		}
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			Container c = (Container)e.getSource();
+			c.setBackground(Color.GREEN);
+		}
+	}
+	public static void main(String[] args) {
+		new Exercise10_2();
+
+	}
+
+}
+
+```
