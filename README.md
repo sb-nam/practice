@@ -539,3 +539,61 @@ public class TextCopyEx {
 }
 
 ```
+```java
+
+package Exercise;
+
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+public class Exercise10_1 extends JFrame {
+
+	private JLabel la = new JLabel("Love you");
+
+	public Exercise10_1() {
+		// TODO Auto-generated constructor stub
+		setTitle("마우스 올리기 내리기");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLayout(null);
+
+//		Container c = getContentPane();
+//		c.addMouseListener(new MyMouseListener());
+//		c.setLayout(new FlowLayout());
+//		c.add(la);
+
+		add(la);
+		la.setSize(100, 50);
+		la.addMouseListener(new MyMouseListener());
+
+		setSize(300, 200);
+		setVisible(true);
+	}
+
+	class MyMouseListener extends MouseAdapter {
+		
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			JLabel la = (JLabel)e.getSource();
+			la.setText("사랑해");
+		}
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			la.setText("Love you");
+		}
+
+	}
+	public static void main(String[] args) {
+		new Exercise10_1();
+	}
+}
+
+```
