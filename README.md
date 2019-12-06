@@ -646,3 +646,80 @@ public class Exercise10_2 extends JFrame {
 }
 
 ```
+
+```java
+
+package Exercise;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+@SuppressWarnings("serial")
+public class P582_3 extends JFrame{
+
+   JLabel la = new JLabel();
+   
+   public P582_3() {
+      
+      setTitle("S");
+      setDefaultCloseOperation(EXIT_ON_CLOSE);
+      
+      Container c = getContentPane();
+      c.setLayout(new FlowLayout());
+      la.setText("Love Java");
+      c.add(la);
+      c.addKeyListener(new KeyListener() {
+         
+         @Override
+         public void keyTyped(KeyEvent e) {
+            // TODO Auto-generated method stub
+         }
+         
+         @Override
+         public void keyReleased(KeyEvent e) {
+            // TODO Auto-generated method stub
+         }
+         
+         @Override
+         public void keyPressed(KeyEvent e) {
+            String x=la.getText();
+            int keyCode=e.getKeyCode();
+            if(KeyEvent.VK_LEFT==keyCode) {
+               StringBuffer sb=new StringBuffer(x);
+               char temp = sb.charAt(0);
+               sb.deleteCharAt(0);
+               sb.append(temp);
+               la.setText(sb.toString());
+            }
+            if(KeyEvent.VK_RIGHT==keyCode) {
+               StringBuffer sb=new StringBuffer(x);
+               char temp = sb.charAt(sb.length()-1);
+               sb.deleteCharAt(sb.length()-1);
+               sb.insert(0, temp);
+               la.setText(sb.toString());
+            }
+            if(KeyEvent.VK_UP==keyCode) {
+               la.setFont(la.getFont ().deriveFont (la.getFont().getSize()+10.f));
+            }
+            if(KeyEvent.VK_DOWN==keyCode) {
+               la.setFont(la.getFont ().deriveFont (la.getFont().getSize()-10.f));
+            }
+         }
+      });
+      setSize(200,200);
+      setVisible(true);
+      
+      c.setFocusable(true);
+      c.requestFocus();
+   }
+   public static void main(String[] args) {
+      new P582_3();
+   }
+
+}
+```
