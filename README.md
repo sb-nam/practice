@@ -723,3 +723,109 @@ public class P582_3 extends JFrame{
 
 }
 ```
+
+```java
+
+package exexex;
+
+import java.awt.Component;
+import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+@SuppressWarnings("serial")
+public class GridLayoutEx extends JFrame {
+
+	JLabel name;
+	JLabel dateOfBirth;
+
+	JButton search;
+	JButton cancel;
+
+	JTextField nameInput;
+	JTextField dateOfBirthInput;
+
+	public GridLayoutEx() {
+
+		setTitle("GridLayout");
+		setSize(350, 200);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		JPanel jpanel = new JPanel();
+		jpanel.setLayout(new GridLayout(3, 2));
+
+		name = new JLabel("이름");
+		dateOfBirth = new JLabel("주민번호");
+
+		search = new JButton("조회");
+		cancel = new JButton("취소");
+
+		nameInput = new JTextField(2);
+		dateOfBirthInput = new JTextField(2);
+
+		search.addMouseListener(new MySearchListener());
+		cancel.addMouseListener(new MyCancelListener());
+
+		jpanel.add(name);
+		jpanel.add(nameInput);
+
+		jpanel.add(dateOfBirth);
+		jpanel.add(dateOfBirthInput);
+
+		jpanel.add(search);
+		jpanel.add(cancel);
+
+		add(jpanel);
+		setVisible(true);
+
+	}
+
+	public static void main(String[] args) {
+		new GridLayoutEx();
+
+	}
+
+	class MySearchListener extends MouseAdapter {
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+			Component standard = (Component) e.getSource();
+			if (standard.equals(search)) {
+				if (nameInput.getText().equals("") && dateOfBirthInput.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "이름과 주민번호를 입력하세요.");
+					nameInput.requestFocus();
+
+				} else if (nameInput.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "이름을 입력하세요.");
+					nameInput.requestFocus();
+
+				} else if (dateOfBirthInput.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "주민번호를 입력하세요.");
+					dateOfBirthInput.requestFocus();
+
+				} else {
+					JOptionPane.showMessageDialog(null,
+							"이름 : " + nameInput.getText() + "\n" + "주민번호 : " +       dateOfBirthInput.getText());
+					nameInput.requestFocus();
+				}
+			}
+		}
+	}
+
+	class MyCancelListener extends MouseAdapter {
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+			nameInput.setText("");
+			dateOfBirthInput.setText("");
+		}
+	}
+}
