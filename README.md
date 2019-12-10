@@ -904,3 +904,56 @@ public class Exercise11_1 extends JFrame {
 }
 
 ```
+
+```java
+
+package Exercise;
+
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+
+public class Exercise11_2 extends JFrame {
+	private JTextField field = new JTextField(10);
+	JComboBox<String> input = new JComboBox<String>();
+	
+	public Exercise11_2() {
+		setTitle("2번 문제");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Container c = getContentPane();
+		c.setLayout(new FlowLayout());
+		
+		
+		
+		c.add(field);
+		c.add(input);
+		
+		field.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				JTextField saveName = (JTextField)e.getSource();
+				input.addItem(saveName.getText()+"\n");
+				field.setText("");
+			}
+		});
+		
+		setSize(300,300);
+		setVisible(true);
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new Exercise11_2();
+
+	}
+
+}
+
+```
