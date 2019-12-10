@@ -829,3 +829,78 @@ public class GridLayoutEx extends JFrame {
 		}
 	}
 }
+```
+
+```java
+
+package Exercise;
+
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+
+public class Exercise11_1 extends JFrame {
+	private JCheckBox[] ckb = new JCheckBox[2];
+	private String[] names = { "버튼 비활성화", "버튼 감추기" };
+
+	JButton button = new JButton("TEST BUTTON");
+	
+	public Exercise11_1() {
+		setTitle("1번문제");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Container c = getContentPane();
+		c.setLayout(new FlowLayout());
+
+
+		MyItemListener listener = new MyItemListener();
+		for (int i = 0; i < ckb.length; i++) {
+			ckb[i] = new JCheckBox(names[i]);
+			ckb[i].setBorderPainted(true);
+			c.add(ckb[i]);
+			ckb[i].addItemListener(listener);
+		}
+
+		c.add(button);
+		setSize(250, 200);
+		setVisible(true);
+	}
+
+	class MyItemListener implements ItemListener {
+
+		@Override
+		public void itemStateChanged(ItemEvent e) {
+			// TODO Auto-generated method stub
+			if (e.getStateChange() == ItemEvent.SELECTED) {
+				if (e.getItem() == ckb[0]) {
+					button.setEnabled(false);
+				} else if (e.getItem() == ckb[1]) {
+					button.setVisible(false);
+				}
+			} else {
+				if (e.getItem() == ckb[0]) {
+					button.setEnabled(true);
+				}
+				if (e.getItem() == ckb[1]) {
+					button.setVisible(true);
+				}
+
+			}
+
+		}
+
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new Exercise11_1();
+
+	}
+
+}
+
+```
