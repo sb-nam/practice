@@ -957,3 +957,78 @@ public class Exercise11_2 extends JFrame {
 }
 
 ```
+
+```java
+
+package Exercise;
+
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.util.Calendar;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+class Clock implements Runnable {
+
+	private JLabel time;
+	
+	public Clock(JLabel time) {
+		this.time = time;
+	
+	}
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		while(true) {
+			DigitalCalendar watch = new DigitalCalendar();
+			time.setText(Integer.toString(watch.hour)+ ":" +Integer.toString(watch.minute)
+					+":"+Integer.toString(watch.second));
+		}
+		
+	}
+	
+}
+
+class DigitalCalendar {
+	
+Calendar clock = Calendar.getInstance();
+
+int hour = clock.get(Calendar.HOUR_OF_DAY);
+int minute = clock.get(Calendar.MINUTE);
+int second = clock.get(Calendar.SECOND);
+}
+
+public class Exercise13_3 extends JFrame {
+	
+	
+	public Exercise13_3() {
+		
+		setTitle("디지탈 시계 만들기");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Container c = getContentPane();
+		c.setLayout(new FlowLayout());
+		
+		JLabel time = new JLabel();
+		time.setFont(new Font("Gothic", Font.ITALIC, 30));
+		c.add(time);
+		
+		Clock clock = new Clock(time);
+		Thread th = new Thread(clock);
+		
+		setSize(250, 200);
+		setVisible(true);
+		
+		th.start();
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new Exercise13_3();
+
+	}
+
+}
+
+```
