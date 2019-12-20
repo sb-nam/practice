@@ -1104,3 +1104,128 @@ public class JDBC_Ex {
 }
 
 ```
+
+```java
+
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JTextArea;
+
+public class JDBC_EX2 extends JFrame {
+	private static Connection con;
+	private static Statement stm = null;
+	private static ResultSet sr;
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		try {
+			Class.forName("oracle.jdbc.OracleDriver");
+
+			String user = "scott";
+			String pwd = "tiger";
+			String url = "jdbc:oracle:thin:@//localhost:1521/xe";
+
+			con = DriverManager.getConnection(url, user, pwd);
+
+			System.out.println("Oracle DB연결에 성공하였습니다.");
+
+			stm = con.createStatement();
+			sr = stm.executeQuery("select * from student");
+			printData(sr);
+			stm.executeUpdate("delete from student where student_name = '헉길동'");
+			sr = stm.executeQuery("select student_name, student_id from student where student_name = '홍길동'");
+			printData(sr);
+			stm.executeUpdate("insert into student(student_name, student_id) values('헉길동','4')");
+
+			sr = stm.executeQuery("select * from student");
+			printData(sr);
+			stm.executeUpdate("update student set student_id = '2' where student_name = '후길동'");
+			sr = stm.executeQuery("select * from student");
+			printData(sr);
+			sr = stm.executeQuery("select * from student order by student_id");
+			printData(sr);
+
+
+//				printData(sr);
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 드라이버 로딩 실패 :" + e.toString());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 접속실패 :" + e.toString());
+			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("uknown Error");
+		}
+
+		new JDBC_EX2();
+		
+	}
+
+	private static void printData(ResultSet srs) throws SQLException {
+		// TODO Auto-generated method stub
+		System.out.println("---------------------------------");
+		while (srs.next()) {
+
+			System.out.print(new String(srs.getString("student_name")));
+			System.out.print("\t|\t" + srs.getString("student_id"));
+			System.out.println();
+
+		}
+		System.out.println("---------------------------------");
+
+	}
+
+	public JDBC_EX2() {
+
+		setTitle("EX2");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Container c = getContentPane();
+		c.setLayout(new GridLayout(0,2));
+		JButton btn = new JButton("DB확인");
+		c.add(btn);
+
+		JTextArea la = new JTextArea();
+		c.add(la);
+
+		btn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String output = "";
+				la.setText(output);
+				try {
+					sr=stm.executeQuery("select * from student");
+					
+					while(sr.next()) {
+						output = sr.getInt("student_id") +" "+ sr.getString("student_name");
+						la.append("\n");
+						la.append(output);
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					System.out.println("오류 여기");
+				}
+				
+			}
+		});
+
+		setSize(300, 300);
+		setVisible(true);
+	}
+}
+```
