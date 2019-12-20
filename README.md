@@ -1032,3 +1032,75 @@ public class Exercise13_3 extends JFrame {
 }
 
 ```
+```java
+
+import java.sql.*;
+
+public class JDBC_Ex {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Connection conn;
+		Statement stmt = null;
+		ResultSet srs;
+
+		try {
+			Class.forName("oracle.jdbc.OracleDriver");
+
+			String user = "scott";
+			String pwd = "tiger";
+			String url = "jdbc:oracle:thin:@//localhost:1521/xe";
+
+			conn = DriverManager.getConnection(url, user, pwd);
+
+			System.out.println("Oracle DB연결에 성공하였습니다.");
+
+			stmt = conn.createStatement();
+			srs = stmt.executeQuery("select * from student");
+            printData(srs);
+			stmt.executeUpdate("delete from student where student_name = '헉길동'");
+			srs = stmt.executeQuery("select student_name, student_id from student where student_name = '홍길동'");
+			printData(srs);stmt.executeUpdate("insert into student(student_name, student_id) values('헉길동','4')");
+			
+			srs = stmt.executeQuery("select * from student");
+			printData(srs);
+			stmt.executeUpdate("update student set student_id = '2' where student_name = '후길동'");
+			srs = stmt.executeQuery("select * from student");
+			printData(srs);
+			srs = stmt.executeQuery("select * from student order by student_id");
+			printData(srs);
+			
+			srs.close();
+			conn.close();
+			stmt.close();
+//			printData(srs);
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 드라이버 로딩 실패 :" + e.toString());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("DB 접속실패 :" + e.toString());
+			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("uknown Error");
+		}
+
+	}
+
+	private static void printData(ResultSet srs) throws SQLException {
+		// TODO Auto-generated method stub
+		System.out.println("---------------------------------");
+		while (srs.next()) {
+
+			System.out.print(new String(srs.getString("student_name")));
+			System.out.print("\t|\t" + srs.getString("student_id"));
+			System.out.println();
+
+		}
+		System.out.println("---------------------------------");
+	}
+
+}
+
+```
