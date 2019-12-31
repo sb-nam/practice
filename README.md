@@ -1229,3 +1229,72 @@ public class JDBC_EX2 extends JFrame {
 	}
 }
 ```
+
+```java
+
+import java.sql.*;
+import java.util.Scanner;
+class Test2 {
+	public Connection getConnection() {
+		Connection conn = null;
+		
+		try {
+			Class.forName("oracle.jdbc.OracleDriver");
+			
+			String url = "jdbc:oracle:thin:@//localhost/xe";
+			String user = "scott";
+			String pwd = "tiger";
+			
+			conn = DriverManager.getConnection(url, user, pwd);
+			System.out.println("DB연결 성공");
+			
+		} catch (ClassNotFoundException e) {
+			System.out.println("DB드라이버 로딩 실패:" + e.toString());
+			e.printStackTrace();
+		} catch (SQLException e) {
+			System.out.println("DB 접속 실패" + e.toString());
+			e.printStackTrace();
+		}
+		
+		return conn;
+		
+	}
+	
+}
+
+class JDBC_InputTest {
+	Statement stmt;
+	ResultSet rs;
+	
+	public void inputedConn() {
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.print("이름의 일부 글자 입력 : ");
+		String name = sc.nextLine();
+		
+		try {
+			stmt = new Test2().getConnection().createStatement();
+			rs = stmt.executeQuery("select * from emp where upper(ENAME) like upper('%"+name+"%')");
+			
+			while(rs.next()) {
+				System.out.print(rs.getString("EMPNO")+"\t");
+				System.out.print(rs.getString("ENAME")+"\t");
+				System.out.println();
+			}
+		} catch (SQLException e) {			
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+}
+
+public class JDBC_Test2 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		new JDBC_InputTest().inputedConn();
+		}
+
+}
+
+```
