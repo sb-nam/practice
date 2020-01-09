@@ -1298,3 +1298,126 @@ public class JDBC_Test2 {
 }
 
 ```
+
+```java
+
+
+import java.sql.*;
+import java.util.Scanner;
+
+class MyDBConn {
+	public Connection getConn() throws ClassNotFoundException, SQLException {
+		Connection conn = null;
+
+		Class.forName("oracle.jdbc.OracleDriver");
+
+		String url = "jdbc:oracle:thin:@//localhost:1521/xe";
+		String user = "scott";
+		String pwd = "tiger";
+
+		conn = DriverManager.getConnection(url, user, pwd);
+		System.out.println("연결 성공!");
+
+		return conn;
+
+	}
+
+}
+
+class MyDBStmt {
+
+	public void getStmt() throws ClassNotFoundException, SQLException {
+
+		Scanner sc = new Scanner(System.in);
+
+		Statement stmt;
+		ResultSet rs;
+
+		System.out.println("1.회원보기 2.회원등록 3.회원삭제 4.회원 수정");
+		int input = sc.nextInt();
+		sc.nextLine();
+		stmt = new MyDBConn().getConn().createStatement();
+		rs = stmt.executeQuery("select * from membership");
+		switch (input) {
+
+		case 1:
+			while (rs.next()) {
+				System.out.println("ID       NAME      NUM      PHONE");
+				System.out.print(rs.getString("MEMBER_ID") + "\t");
+				System.out.print(rs.getString("MEMBER_NAME") + "\t");
+				System.out.print(rs.getString("MEMBER_NUM") + "\t");
+				System.out.print(rs.getString("MEMBER_PHONE") + "\t");
+				System.out.println();
+			}
+			break;
+		case 2:			
+			System.out.print("아이디 : ");
+			String membershipId = sc.nextLine();
+
+			if (checkId(membershipId)) {
+
+				System.out.print("이름 : ");
+				String membershipName = sc.nextLine();
+				System.out.print("주민번호 : ");
+				String membershipNum = sc.nextLine();
+				System.out.print("연락처 : ");
+				String membershipPhone = sc.nextLine();
+				stmt.executeUpdate("insert into membership(MEMBER_ID,MEMBER_NAME,MEMBER_NUM,MEMBER_PHONE) " + "values('"
+						+ membershipId + "'," + " '" + membershipName + "'," + "'" + membershipNum + "'," + "'"
+						+ membershipPhone + "'" + ")");
+			} else {
+				System.out.println("중복된 아이디 입니다.");
+			}
+			break;
+		case 3:
+			System.out.print("삭제할 아이디 입력 : ");
+			String deleteId = sc.nextLine();
+			stmt.executeUpdate("delete from membership where MEMBER_ID = '" + deleteId + "'");
+			break;
+		case 4:
+			System.out.print("수정 할 회원 전화번호 입력 : ");
+			String modifyPhone = sc.nextLine();
+			System.out.print("수정 할 회원 아이디 입력: ");
+			String modifyId = sc.nextLine();
+			stmt.executeUpdate(
+					"update membership set MEMBER_PHONE ='" + modifyPhone + "' where MEMBER_ID = '" + modifyId + "'");
+			break;
+		}
+		
+		
+
+		sc.close();
+	}
+	
+	public boolean checkId(String id) throws ClassNotFoundException, SQLException {
+		boolean check = true;
+		Statement stmt = new MyDBConn().getConn().createStatement();
+		ResultSet rs = stmt.executeQuery("select * from membership");
+		while(rs.next()) {
+			if(id.equals(rs.getString("MEMBER_ID"))) {
+				check = false;
+			}
+		}
+		return check;
+		
+	}
+}
+
+public class MyOracleTest {
+
+	public static void main(String[] args) {
+		try {
+			new MyDBStmt().getStmt();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+}
+
+```
