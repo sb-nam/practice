@@ -1422,3 +1422,108 @@ public class MyOracleTest {
 }
 
 ```
+```java
+//sql연동문제
+
+import java.sql.*;
+import java.util.Scanner;
+
+class Connect {
+
+	public Connection getCon() throws ClassNotFoundException, SQLException {
+
+		Connection conn = null;
+
+		Class.forName("oracle.jdbc.OracleDriver");
+		String url = "jdbc:oracle:thin:@//localhost:1521/xe";
+		String user = "scott";
+		String pwd = "tiger";
+
+		conn = DriverManager.getConnection(url, user, pwd);
+		System.out.println("연결성공~");
+		return conn;
+	}
+
+}
+
+class Search {
+
+	@SuppressWarnings("resource")
+	public void getSearch() throws ClassNotFoundException, SQLException {
+
+		Scanner sc = new Scanner(System.in);
+		System.out.print("팀명 또는 팀장 이름을 입력하세요>>");
+		String name = sc.nextLine();
+
+		Statement stmt;
+		ResultSet rs;
+
+		stmt = new Connect().getCon().createStatement();
+
+		rs = stmt.executeQuery("select * from team");
+
+		while (rs.next()) {
+
+			if (name.equals(rs.getString("tname"))) {
+
+				getTname(name);
+				
+
+			} else if(name.equals(rs.getString("captain"))) {
+				getCaptainName(name);
+				
+			}
+		}
+	}
+
+	public void getTname(String name) throws ClassNotFoundException, SQLException {
+
+		Statement stmt;
+		ResultSet rs;
+
+		stmt = new Connect().getCon().createStatement();
+		rs = stmt.executeQuery("select * from javastudent j join team t on( j.tno = t.tno)");
+
+		rs = stmt.executeQuery("select j.name from javastudent j join team t on(j.tno = t.tno) "
+				+ "where t.tname = (select tname from team where tname = '" + name + "') order by j.name");
+
+		while (rs.next()) {
+			System.out.print(rs.getString("name"));
+			System.out.println();
+
+		}
+	}
+
+	public void getCaptainName(String name) throws SQLException, ClassNotFoundException {
+
+		Statement stmt;
+		ResultSet rs;
+		stmt = new Connect().getCon().createStatement();
+		rs = stmt.executeQuery("select j.name from javastudent j join team t on(j.tno = t.tno) "
+				+ "where t.captain = (select captain from team where captain = '" + name + "') order by j.name");
+
+		while (rs.next()) {
+			System.out.print(rs.getString("name"));
+			System.out.println();
+		}
+	}
+}
+
+public class JDBC_Oracle_Java {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		try {
+			new Search().getSearch();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}
+```
